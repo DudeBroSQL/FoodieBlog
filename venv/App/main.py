@@ -4,17 +4,17 @@ from datetime import datetime
 
 
 
-dummy_data = [
-    {
-        'title':'Post1',
-        'content':'Post1 content ipsum lorem filler text',
-        'author':'Sean'
-    },
-    {
-        'title':'Post2',
-        'content':'Post2 content ipsum lorem filler text'
-    }
-]
+# dummy_data = [
+#     {
+#         'title':'Post1',
+#         'content':'Post1 content ipsum lorem filler text',
+#         'author':'Sean'
+#     },
+#     {
+#         'title':'Post2',
+#         'content':'Post2 content ipsum lorem filler text'
+#     }
+# ]
 
 
 
@@ -41,9 +41,13 @@ class BlogPost(db.Model):
 def home():
     return render_template('index.html')
 
-@app.route('/posts')   
+@app.route('/posts', methods = ['GET'])   
 def posts():
-    return render_template('posts.html', posts = dummy_data)
+    return render_template('posts.html', posts = BlogPost.query.all())
+
+@app.route('/post/add', methods = ['GET'])   
+def posts():
+    return render_template('posts.html', posts = BlogPost.query.all())    
 
 
 if __name__ == '__main__':
