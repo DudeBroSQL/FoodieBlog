@@ -1,6 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template,request
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timedelta
+
+from werkzeug.utils import redirect
 
 
 
@@ -45,9 +47,18 @@ def home():
 def posts():
     return render_template('posts.html', posts = BlogPost.query.all())
 
-@app.route('/post/add', methods = ['GET'])   
-def posts():
-    return render_template('posts.html', posts = BlogPost.query.all())    
+@app.route('/addpost', methods = ['GET','POST'])   
+def addpost():
+    if request.method == 'POST':
+        post_title = request.form['title']
+        post_author = request.form['author']
+        post_content = request.form['content']
+        new_post = BlogPost(title=post_title, content =post_content, author = post_author)
+        db.session.add(new_post)
+        db.session.commit()
+        return redirect('/posts')
+    else:
+        return render_template('addpost.html')    
 
 
 if __name__ == '__main__':
